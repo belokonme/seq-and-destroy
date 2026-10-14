@@ -36,8 +36,6 @@ def read_fastq(path):
             quality = file.readline().strip()
             yield(name, seq, plus, quality) 
 
-from pathlib import Path
-
 def write_read(file, read):
     name, seq, plus, quality = read
     file.write(name + "\n" + seq + "\n" + plus + "\n" + quality + "\n")
