@@ -11,3 +11,9 @@ def mean_quality(quality):
     for symbol in quality:
         total_quality += ord(symbol) - 33
     return total_quality / len(quality)
+
+def create_bounds(bounds):
+    if isinstance(bounds, (float, int)):
+        return (0, bounds)
+    else:
+        return bounds
