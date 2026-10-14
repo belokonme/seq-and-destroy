@@ -37,3 +37,12 @@ def read_fastq(path):
             quality = file.readline().strip()
             reads.append((name, seq, plus, quality))
     return reads
+
+from pathlib import Path
+
+def write_fastq(reads, output_fastq):
+    Path("filtered").mkdir(exist_ok = True)
+    path = Path("filtered") / output_fastq
+    with open(path, "w") as file:
+        for name, seq, plus, quality in reads:
+            file.write(name + "\n" + seq + "\n" + plus + "\n" + quality + "\n")
