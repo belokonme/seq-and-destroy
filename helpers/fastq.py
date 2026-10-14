@@ -24,3 +24,16 @@ def is_within_bounds(value, bounds):
         return True
     else: 
         return False
+
+def read_fastq(path):
+    reads = []
+    with open(path) as file:
+        while True:
+            name = file.readline().strip()
+            if name == "":
+                break
+            seq = file.readline().strip()
+            plus = file.readline().strip()
+            quality = file.readline().strip()
+            reads.append((name, seq, plus, quality))
+    return reads
