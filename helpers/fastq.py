@@ -17,3 +17,10 @@ def create_bounds(bounds):
         return (0, bounds)
     else:
         return bounds
+
+def is_within_bounds(value, bounds):
+    lower, upper = bounds
+    if value <= upper and value >= lower:
+        return True
+    else: 
+        return False
