@@ -26,7 +26,6 @@ def is_within_bounds(value, bounds):
         return False
 
 def read_fastq(path):
-    reads = []
     with open(path) as file:
         while True:
             name = file.readline().strip()
@@ -35,14 +34,10 @@ def read_fastq(path):
             seq = file.readline().strip()
             plus = file.readline().strip()
             quality = file.readline().strip()
-            reads.append((name, seq, plus, quality))
-    return reads
+            yield(name, seq, plus, quality) 
 
 from pathlib import Path
 
-def write_fastq(reads, output_fastq):
-    Path("filtered").mkdir(exist_ok = True)
-    path = Path("filtered") / output_fastq
-    with open(path, "w") as file:
-        for name, seq, plus, quality in reads:
-            file.write(name + "\n" + seq + "\n" + plus + "\n" + quality + "\n")
+def write_read(file, read):
+    name, seq, plus, quality = read
+    file.write(name + "\n" + seq + "\n" + plus + "\n" + quality + "\n")
