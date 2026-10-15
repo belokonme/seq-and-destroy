@@ -42,7 +42,7 @@ Simply `git clone` this repository to use it on your machine:
 
 Import the functions for use:
 
-```
+```python
 from seq_and_destroy import (filter_fastq, parse_blast_output, select_genes_from_gbk_to_fasta)
 ```
 
@@ -53,18 +53,23 @@ Launch the utilities in the root of this repository.
 Function `filter_fastq()` filters reads in FASTQ-file by GC content, length, and quality of read. It accepts 5 arguments:
 
 - input_fastq (_str_) 
+
 Name of your FASTQ-file you want to filter.
 
 - output_fastq (_str_)
+
 Name of your output FASTQ-file with filtered reads.
 
 - gc_bounds (_int | float | tuple_)
+
 A single upper limit of GC content percentage *or* a precise interval you want to set. Default value for this argument is `gc_bounds = (0, 100)`.
 
 - length_bounds (_int | float | tuple_)
+
 Length of a read (upper limit or interval). Default value is `length_bounds = (0, 2 ** 32)`.
 
 - quality_threshold (_int | float_)
+
 Minimal quality of a read. Default value is `quality_threshold = 0`.
 
 The results are stored in "filtered/" folder.
@@ -73,7 +78,7 @@ The results are stored in "filtered/" folder.
 
 1. Default settings:
 
-```
+```python
 filter_fastq("example_data/example_fastq.fastq", "all_reads.fastq")
 ```
 
@@ -95,9 +100,11 @@ Writes only reads that satisfy the parameteres (in this case, 27).
 Function parse_blast_output() gathers BLAST best hits for genes of interest and writes them to file. It accepts 2 arguments:
 
 - input_file (_str_)
+
 Path to your input file (output after BLAST search).
 
 - output_file (_str_)
+
 Name of your output file with best hits.
 
 ### Examples
@@ -115,18 +122,23 @@ Function select_genes_from_gbk_to_fasta() selects neighbouring genes from .gbk f
 Function accepts 5 arguments:
 
 - input_gbk (_str_)
+
 Path to your .gbk input file.
 
 - genes (_str | list | tuple_)
+
 Your gene or genes of interest that you want to find neighbours of.
 
 - n_before (_int_)
+
 Number of genes that come before the gene(s) of interest in the file. Default value is `1`.
 
 - n_after (_int_)
+
 Number of genes that come after the gene(s) of interest in the file. Default value is `1`.
 
 - output_fasta (_str_)
+
 Name of your output file with selected neighbouring genes and their sequences. Default is `"output.fasta"`.
 
 ### Examples
