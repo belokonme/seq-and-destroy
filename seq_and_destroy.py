@@ -2,6 +2,8 @@ from pathlib import Path
 
 from helpers.fastq import (gc_content, mean_quality, create_bounds, is_within_bounds, read_fastq, write_read)
 
+from bio_files.py import (read_gbk, get_neighbouring_genes, write_to_fasta)
+
 def filter_fastq(input_fastq, output_fastq, gc_bounds = (0, 100), length_bounds = (0, 2 ** 32), quality_threshold = 0):
     gc_bounds = create_bounds(gc_bounds)
     length_bounds = create_bounds(length_bounds)
