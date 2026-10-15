@@ -33,3 +33,15 @@ def read_gbk(path):
                     seq += gbk.readline().strip()
                 cds_info["translation"] = seq.replace("/translation=", '').replace('"', '')
         return cds_list
+
+def get_neighbouring_genes(cds_list, genes, n_before, n_after):
+    neighbouring_genes = []
+    genes_of_interest_indices = []
+    for i, cds in enumerate(cds_list):
+        if cds['gene'] in genes or cds['locus_tag'] in genes:
+            genes_of_interest_indices.append(i)
+    for index in genes_of_interest_indices:
+        for j in range(index - n_before, index + n_after + 1):
+            if j >= 0 and j < len(cds_list) and j not in genes_of_interest_indices and cds_list[j] not in neighbouring_genes:
+                neighbouring_genes.append(cds_list[j])
+    return neighbouring_genes
