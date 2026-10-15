@@ -5,7 +5,25 @@ from helpers.fastq import (gc_content, mean_quality, create_bounds, is_within_bo
 from helpers.bio_files import (read_gbk, get_neighbouring_genes, write_to_fasta)
 
 
-def filter_fastq(input_fastq, output_fastq, gc_bounds = (0, 100), length_bounds = (0, 2 ** 32), quality_threshold = 0):
+def filter_fastq(
+                 input_fastq: str, 
+                 output_fastq: str, 
+                 gc_bounds: int | float | tuple = (0, 100), 
+                 length_bounds: int | float | tuple = (0, 2 ** 32), 
+                 quality_threshold: int | float = 0
+                 ) -> None:
+    """
+    Filters reads in .fastq file by GC content, length, quality of read.
+
+    Arguments:
+    input_fastq: str (name of input .fastq file)
+    output_fastq: str (name of output .fastq file, will be saved to "filtered/")
+    gc_bounds: int / float / tuple (interval for GC content; a single number is the upper bound)
+    length_bounds: int / float / tuple (interval for read length)
+    quality_threshold: int / float (minimal quality of read)
+
+    If read in .fastq passes filtration, writes it to file in "filtered/" folder.
+    """
     gc_bounds = create_bounds(gc_bounds)
     length_bounds = create_bounds(length_bounds)
     Path("filtered").mkdir(exist_ok=True)
@@ -15,7 +33,16 @@ def filter_fastq(input_fastq, output_fastq, gc_bounds = (0, 100), length_bounds 
                 write_read(out,(name, seq, plus, quality))
 
 
-def parse_blast_output(input_file, output_file):
+def parse_blast_output(input_file: str, output_file: str) -> None:
+    """
+    Gathers BLAST best hits for genes of interest and writes them to file.
+
+    Arguments:
+    input_file: str (name of input file with BLAST results)
+    output_file: str (name of output file with best hits)
+
+    Written file is sorted by alphabet.
+    """
     best_hits = []
     query = "Sequences producing significant alignments:"
     with open(input_file) as blast_output:
@@ -31,7 +58,23 @@ def parse_blast_output(input_file, output_file):
             out.write(hit + "\n")
 
 
-def select_genes_from_gbk_to_fasta(input_gbk, genes, n_before = 1, n_after = 1, output_fasta = "output.fasta"):
+def select_genes_from_gbk_to_fasta(
+                                   input_gbk: str, 
+                                   genes: str | list | tuple, 
+                                   n_before: int = 1, 
+                                   n_after: int = 1, 
+                                   output_fasta: str = "output.fasta"
+                                   ) -> None:
+    """
+    Selects neighbouring genes from .gbk file and writes their protein sequences to file in .fasta format.
+
+    Arguments:
+    input_gbk: str (path to .gbk input file)
+    genes: str / list / tuple (genes of interest)
+    n_before: int (number of genes before gene of interest)
+    n_after: int (number of genes after gene of interest)
+    output_fasta: str (name of output file in .fasta format)
+    """
     if isinstance(genes, str):
         genes = [genes]
     cds_list = read_gbk(input_gbk)
