@@ -12,3 +12,24 @@ def parse_blast_output(input_file, output_file):
         best_hits.sort(key = str.lower)
         for hit in best_hits:
             out.write(hit + "\n")
+
+def read_gbk(path):
+    cds_list = []
+    cds_info = None
+    with open(path) as gbk:
+        for line in gbk:
+            if line.startswith("     CDS"):
+                cds_info = {"gene":None, "locus_tag":None, "translation": ""}
+                cds_list.append(cds_info)
+            elif line.startswith("                     /gene") and cds_info is not None:
+                cds_info["gene"] = line.strip().split('"')[1]
+            elif line.startswith("                     /locus_tag") and cds_info is not None:
+                cds_info["locus_tag"] = line.strip().split('"')[1]
+            elif line.startswith("     ") and line[5] != " ":
+                cds_info = None
+            elif line.startswith("                     /translation") and cds_info is not None:
+                seq = line.strip()
+                while not seq.endswith('"'):
+                    seq += gbk.readline().strip()
+                cds_info["translation"] = seq.replace("/translation=", '').replace('"', '')
+        return cds_list
