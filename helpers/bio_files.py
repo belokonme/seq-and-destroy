@@ -1,10 +1,18 @@
-def read_gbk(path):
+def read_gbk(path: str) -> list[dict]:
+    """
+    Reads .gbk file and extracts only gene name/locus tag and sequence.
+
+    Arguments:
+    path: str (path to .gbk file)
+
+    Returns list of dictionaries with name of gene and/or locus tag and respective protein sequence.
+    """
     cds_list = []
     cds_info = None
     with open(path) as gbk:
         for line in gbk:
             if line.startswith("     CDS"):
-                cds_info = {"gene":None, "locus_tag":None, "translation": ""}
+                cds_info = {"gene": None, "locus_tag": None, "translation": ""}
                 cds_list.append(cds_info)
             elif line.startswith("                     /gene") and cds_info is not None:
                 cds_info["gene"] = line.strip().split('"')[1]
@@ -20,7 +28,18 @@ def read_gbk(path):
         return cds_list
 
 
-def get_neighbouring_genes(cds_list, genes, n_before, n_after):
+def get_neighbouring_genes(cds_list: list[dict], genes: list, n_before: int, n_after: int) -> list[dict]:
+    """
+    Finds neighbouring genes for genes of interest.
+
+    Arguments:
+    cds_list: list[dict] (genes and/or locus tags and sequences)
+    genes: list (genes of interest)
+    n_before: int (number of neighbours before gene of interest)
+    n_after: int (number of neighbours after gene of interest)
+
+    Returns neighbouring genes for genes of interest.
+    """
     neighbouring_genes = []
     genes_of_interest_indices = []
     for i, cds in enumerate(cds_list):
@@ -33,7 +52,14 @@ def get_neighbouring_genes(cds_list, genes, n_before, n_after):
     return neighbouring_genes
 
 
-def write_to_fasta(neighbouring_genes, output_fasta):
+def write_to_fasta(neighbouring_genes: list[dict], output_fasta: str) -> None:
+    """
+    Writes neighbouring genes to file in .fasta format.
+
+    Arguments:
+    neighbouring_genes: list[dict]
+    output_fasta: str (name of output .fasta file)
+    """
     with open(output_fasta, "w") as out:
         for cds in neighbouring_genes:
             if cds['gene'] is not None:
