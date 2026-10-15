@@ -4,6 +4,7 @@ from helpers.fastq import (gc_content, mean_quality, create_bounds, is_within_bo
 
 from helpers.bio_files import (read_gbk, get_neighbouring_genes, write_to_fasta)
 
+
 def filter_fastq(input_fastq, output_fastq, gc_bounds = (0, 100), length_bounds = (0, 2 ** 32), quality_threshold = 0):
     gc_bounds = create_bounds(gc_bounds)
     length_bounds = create_bounds(length_bounds)
@@ -12,6 +13,7 @@ def filter_fastq(input_fastq, output_fastq, gc_bounds = (0, 100), length_bounds 
         for name, seq, plus, quality in read_fastq(input_fastq):
             if is_within_bounds(gc_content(seq), gc_bounds) and is_within_bounds(len(seq), length_bounds) and mean_quality(quality) >= quality_threshold:
                 write_read(out,(name, seq, plus, quality))
+
 
 def parse_blast_output(input_file, output_file):
     best_hits = []
@@ -27,6 +29,7 @@ def parse_blast_output(input_file, output_file):
         best_hits.sort(key = str.lower)
         for hit in best_hits:
             out.write(hit + "\n")
+
 
 def select_genes_from_gbk_to_fasta(input_gbk, genes, n_before = 1, n_after = 1, output_fasta = "output.fasta"):
     if isinstance(genes, str):
