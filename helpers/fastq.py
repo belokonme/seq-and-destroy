@@ -4,6 +4,7 @@ def gc_content(seq):
     seq = seq.upper()
     return (seq.count('G') + seq.count('C')) / len(seq) * 100
 
+
 def mean_quality(quality):
     if not quality:
         return 0
@@ -12,11 +13,13 @@ def mean_quality(quality):
         total_quality += ord(symbol) - 33
     return total_quality / len(quality)
 
+
 def create_bounds(bounds):
     if isinstance(bounds, (float, int)):
         return (0, bounds)
     else:
         return bounds
+
 
 def is_within_bounds(value, bounds):
     lower, upper = bounds
@@ -24,6 +27,7 @@ def is_within_bounds(value, bounds):
         return True
     else: 
         return False
+
 
 def read_fastq(path):
     with open(path) as file:
@@ -35,6 +39,7 @@ def read_fastq(path):
             plus = file.readline().strip()
             quality = file.readline().strip()
             yield(name, seq, plus, quality) 
+
 
 def write_read(file, read):
     name, seq, plus, quality = read
