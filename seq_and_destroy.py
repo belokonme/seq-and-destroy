@@ -10,3 +10,10 @@ def filter_fastq(input_fastq, output_fastq, gc_bounds = (0, 100), length_bounds 
         for name, seq, plus, quality in read_fastq(input_fastq):
             if is_within_bounds(gc_content(seq), gc_bounds) and is_within_bounds(len(seq), length_bounds) and mean_quality(quality) >= quality_threshold:
                 write_read(out,(name, seq, plus, quality))
+
+def select_genes_from_gbk_to_fasta(input_gbk, genes, n_before = 1, n_after = 1, output_fasta = "output.fasta"):
+    if isinstance(genes, str):
+        genes = [genes]
+    cds_list = read_gbk(input_gbk)
+    neighbours = get_neighbouring_genes(cds_list, genes, n_before, n_after)
+    write_to_fasta(neighbours, output_fasta)
