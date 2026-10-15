@@ -34,6 +34,8 @@ Simply `git clone` this repository to use it on your machine:
 |- helpers/             # folder with modules imported to main script
     |- fastq.py
     |- bio_files.py
+|- imgs/
+    |- my_honest_reaction.png 
 ```
 
 # Usage
@@ -150,4 +152,4 @@ Will write _three_ neighbours in total for genes phrB and dtpD to file.
 
 # Personal note
 
-![](my_honest_reaction.png)
+![](imgs/my_honest_reaction.png)
